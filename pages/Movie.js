@@ -12,6 +12,7 @@ const Movie = (style) => {
     const {params: item} = useRoute();
     const [isFavorite, toggleFavorite] = useState(false);
     const [movie, setMovie] = useState({});
+    const [movieTitle, setMovieTitle] = useState("");
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -24,6 +25,7 @@ const Movie = (style) => {
             const data = await response.json();
             if (data) {
                 setMovie(data);
+                setMovieTitle(data.Title);
             }
 
         } catch (error) {
@@ -44,7 +46,9 @@ const Movie = (style) => {
                         <TouchableOpacity className="p-1 mt-2" onPress={() => navigation.goBack()}>
                             <ChevronLeftIcon size={28} strokeWidth={2.5} color="white" />
                         </TouchableOpacity>
-                        <Text className="text-white mt-5 text-lg">{movie.Title}</Text>
+                        <Text className="text-white mt-5 text-lg">
+                            {movieTitle.length>35? movieTitle.slice(0,35)+'...' : movieTitle}
+                        </Text>
                         <TouchableOpacity className="p-1 mt-2 mr-1" onPress={() => toggleFavorite(!isFavorite)}>
                             <HeartIcon size={32} color={isFavorite? theme.primary : "white"} />
                         </TouchableOpacity>
